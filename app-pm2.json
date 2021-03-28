@@ -1,0 +1,9 @@
+{
+    "apps": [
+        {
+            "name": "sos-web-scrapper-app",
+            "script": "npm",
+            "args" : "start"
+        }
+    ]
+}
