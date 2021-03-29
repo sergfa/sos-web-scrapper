@@ -1,17 +1,22 @@
 import { ProductFinderBot } from '../bots/product-finder.bot';
 import { Yad2Product } from '../interfaces/yad2-product.interface';
 import { Yad2PPTRService } from '../services/yad2-pptr.service';
+import Yad2ScrapperService from '../services/yad2-scrapper.service';
 
 export class Yad2Scrapper {
   private _lastYad2Data: Yad2Product[] = [];
   private _yad2Service: Yad2PPTRService;
+  //private _yad2Service: Yad2ScrapperService;
+  
   private _runCount = 0;
 
   get lastYad2Data() {
       return this._lastYad2Data;
   }
   constructor(private category: string = '30', private item: string = '1050', private area?: string) {
+    //this._yad2Service = new Yad2ScrapperService(category, item, area);
     this._yad2Service = new Yad2PPTRService(category, item, area);
+  
   }
 
   scrap(bot: ProductFinderBot) {

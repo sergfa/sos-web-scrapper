@@ -13,9 +13,10 @@ export class Yad2PPTRService {
       console.log('Opening the browser......');
       browser = await puppeteer.launch({
         headless: true,
-        args: ['--disable-setuid-sandbox'],
+        product: 'firefox',
+        /*args: ['--disable-setuid-sandbox', '--disable-dev-shm-usage'],
         ignoreHTTPSErrors: true,
-        ignoreDefaultArgs: ['--enable-automation'],
+        ignoreDefaultArgs: ['--enable-automation'],*/
       });
     } catch (err) {
       console.log('Could not create a browser instance => : ', err);
