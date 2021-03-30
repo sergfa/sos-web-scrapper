@@ -23,12 +23,15 @@ export class SpeedTest {
     const speedTestResult = { ping: -1, download: -1, upload: -1 };
     console.log(lines);
     lines.forEach(line => {
-      if (line.indexOf('Latency:')) {
-        speedTestResult.ping = stdout.search('Latency:s+(.*?)s');
-      } else if (line.indexOf('Download:')) {
-        speedTestResult.download = stdout.search('Download:s+(.*?)s');
-      } else if (line.indexOf('Upload:')) {
-        speedTestResult.upload = stdout.search('Upload:s+(.*?)s');
+      if (line.indexOf('Latency:') > -1) {
+        speedTestResult.ping = line.search('Latency:s+(.*?)s');
+        console.log(line.search('Latency:s+(.*?)s'));
+      } else if (line.indexOf('Download:') > -1) {
+        speedTestResult.download = line.search('Download:s+(.*?)s');
+        console.log(line.search('Download:s+(.*?)s'));
+      } else if (line.indexOf('Upload:') > -1) {
+        speedTestResult.upload = line.search('Upload:s+(.*?)s');
+        console.log(line.search('Upload:s+(.*?)s'));
       }
       console.log(line);
     });
