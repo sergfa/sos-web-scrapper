@@ -24,23 +24,23 @@ export class SpeedTest {
     console.log(lines);
     lines.forEach(line => {
       if (line.indexOf('Server:') === 0) {
-        const server = line.search(/Server:\s*(.*?)$/);
+        const server = line.match(/Server:\s*(.*?)$/)[0];
         console.log(server);
       } else if (line.indexOf('Packet Loss:') === 0) {
-        const packetLoss = line.search(/Packet Loss:\s*(.*?)\%/);
+        const packetLoss = line.match(/Packet Loss:\s*(.*?)\%/)[0];
         console.log(packetLoss);
       } else if (line.indexOf('ISP:') === 0) {
-        const isp = line.search(/ISP:\s*(.*?)$/);
+        const isp = line.match(/ISP:\s*(.*?)$/)[0];
         console.log(isp);
       } else if (line.indexOf('Latency:') === 0) {
-        speedTestResult.ping = line.search(/Latency:\s+(.*?)\s/);
-        console.log(line.search(/Latency:\s+(.*?)\s/));
+        speedTestResult.ping = +line.match(/Latency:\s+(.*?)\s/)[0];
+        console.log(line.match(/Latency:\s+(.*?)\s/)[0]);
       } else if (line.indexOf('Download:') === 0) {
-        speedTestResult.download = line.search(/Download:\s+(.*?)\s/);
-        console.log(line.search(/Download:\s+(.*?)\s/));
+        speedTestResult.download = +line.match(/Download:\s+(.*?)\s/)[0];
+        console.log(line.match(/Download:\s+(.*?)\s/)[0]);
       } else if (line.indexOf('Upload:') === 0) {
-        speedTestResult.upload = line.search(/Upload:\s+(.*?)\s/);
-        console.log(line.search(/Upload:\s+(.*?)\s/));
+        speedTestResult.upload = +line.match(/Upload:\s+(.*?)\s/)[0];
+        console.log(line.match(/Upload:\s+(.*?)\s/)[0]);
       }
       console.log(line);
     });
