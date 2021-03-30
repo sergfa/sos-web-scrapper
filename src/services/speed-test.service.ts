@@ -18,10 +18,20 @@ export class SpeedTest {
     });
   }
 
-  private parseResult(result: string): SpeedTestResult {
-    const ping = result.search('Latency:s+(.*?)s');
-    const download = result.search('Download:s+(.*?)s');
-    const upload = result.search('Upload:s+(.*?)s');
-    return { ping, download, upload };
+  private parseResult(stdout: string): SpeedTestResult {
+    const lines = stdout.split('\n');
+    const speedTestResult = { ping: -1, download: -1, upload: -1 };
+    console.log(lines);
+    lines.forEach(line => {
+      if (line.indexOf('Latency:')) {
+        speedTestResult.ping = stdout.search('Latency:s+(.*?)s');
+      } else if (line.indexOf('Download:')) {
+        speedTestResult.download = stdout.search('Download:s+(.*?)s');
+      } else if (line.indexOf('Upload:')) {
+        speedTestResult.upload = stdout.search('Upload:s+(.*?)s');
+      }
+      console.log(line);
+    });
+    return speedTestResult;
   }
 }
