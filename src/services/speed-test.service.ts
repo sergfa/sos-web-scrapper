@@ -19,7 +19,7 @@ export class SpeedTest {
   }
 
   private parseResult(stdout: string): SpeedTestResult {
-    const lines = stdout.split('\n');
+    const lines = stdout.split(/\s*[\r\n]+\s*/g);
     const speedTestResult = { ping: -1, download: -1, upload: -1 };
     console.log(lines);
     lines.forEach(line => {
