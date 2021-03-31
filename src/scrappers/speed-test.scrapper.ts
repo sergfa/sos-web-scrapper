@@ -10,7 +10,7 @@ export class SpeedTestScrapper {
     setInterval(() => speedTestService.test(this.onSpeedTestSuccess), this._repeatIntervalInMinutes * 60 * 1000);
   }
 
-  private onSpeedTestSuccess(result: SpeedTestResult) {
+  private onSpeedTestSuccess = (result: SpeedTestResult) => {
     console.log(result);
     try {
       this._influx
@@ -27,5 +27,5 @@ export class SpeedTestScrapper {
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 }
