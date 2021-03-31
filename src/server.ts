@@ -17,7 +17,7 @@ const influx = new Influx.InfluxDB({
       measurement: 'test_speed_result',
       fields: {
         server: Influx.FieldType.STRING,
-        ips: Influx.FieldType.STRING,
+        isp: Influx.FieldType.STRING,
         ping: Influx.FieldType.FLOAT,
         download: Influx.FieldType.FLOAT,
         upload: Influx.FieldType.FLOAT,
