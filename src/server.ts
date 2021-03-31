@@ -37,6 +37,7 @@ influx
   })
   .then(() => {
     const speedTestScrapper = new SpeedTestScrapper(5, influx);
+    speedTestScrapper.scrap();
   })
   .catch(err => {
     console.error(`Error creating Influx database!`);
