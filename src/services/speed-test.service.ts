@@ -19,8 +19,8 @@ export class SpeedTestService {
         console.log(`stderr: ${stderr}`);
         return;
       }
-      console.log(`stdout: ${stdout}`);
       const speedTestResult = this.parseResult(stdout);
+      onSuccess(speedTestResult);
     });
   }
 
