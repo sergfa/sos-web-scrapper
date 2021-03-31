@@ -14,13 +14,13 @@ const influx = new Influx.InfluxDB({
   database: 'test_speed_db',
   schema: [
     {
-      measurement: 'test_speed_results',
+      measurement: 'test_speed_result',
       fields: {
         server: Influx.FieldType.STRING,
         ips: Influx.FieldType.STRING,
-        ping: Influx.FieldType.INTEGER,
-        download: Influx.FieldType.INTEGER,
-        upload: Influx.FieldType.INTEGER,
+        ping: Influx.FieldType.FLOAT,
+        download: Influx.FieldType.FLOAT,
+        upload: Influx.FieldType.FLOAT,
         packetLoss: Influx.FieldType.FLOAT,
       },
       tags: ['host'],
