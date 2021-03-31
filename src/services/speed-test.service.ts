@@ -1,8 +1,15 @@
 import child_process from 'child_process';
-import { SpeedTestResult } from '../interfaces/speed-test-result.interface';
+import { SpeedTestResult } from '../models/speed-test-result.model';
 
-export class SpeedTest {
-  test() {
+export class SpeedTestService {
+  static readonly SERVER_REGEX = /Server:\s*(.*?)$/;
+  static readonly PACKET_LOSS_REGEX = /Packet Loss:\s*(.*?)\%/;
+  static readonly ISP_REGEX = /ISP:\s*(.*?)$/;
+  static readonly PING_REGEX = /Latency:\s+(.*?)\s/;
+  static readonly DOWNLOAD_REGEX = /Download:\s+(.*?)\s/;
+  static readonly UPLOAD_REGEX = /Upload:\s+(.*?)\s/;
+  
+  test(onSuccess: (result:SpeedTestResult) => void) {
     child_process.exec('speedtest', (error, stdout, stderr) => {
       if (error) {
         console.log(`error: ${error.message}`);
@@ -14,36 +21,29 @@ export class SpeedTest {
       }
       console.log(`stdout: ${stdout}`);
       const speedTestResult = this.parseResult(stdout);
-      console.log(speedTestResult);
+      onSuccess(speedTestResult);
     });
   }
 
   private parseResult(stdout: string): SpeedTestResult {
     const lines = stdout.split(/\s*[\r\n]+\s*/g);
-    const speedTestResult = { ping: -1, download: -1, upload: -1 };
-    console.log(lines);
+    const speedTestResult = new SpeedTestResult();
     lines.forEach(line => {
-      if (line.indexOf('Server:') === 0) {
-        const server = line.match(/Server:\s*(.*?)$/)[0];
-        console.log(server);
-      } else if (line.indexOf('Packet Loss:') === 0) {
-        const packetLoss = line.match(/Packet Loss:\s*(.*?)\%/)[1];
-        console.log(packetLoss);
-      } else if (line.indexOf('ISP:') === 0) {
-        const isp = line.match(/ISP:\s*(.*?)$/)[1];
-        console.log(isp);
-      } else if (line.indexOf('Latency:') === 0) {
-        speedTestResult.ping = +line.match(/Latency:\s+(.*?)\s/)[1];
-        console.log(line.match(/Latency:\s+(.*?)\s/)[1]);
-      } else if (line.indexOf('Download:') === 0) {
-        speedTestResult.download = +line.match(/Download:\s+(.*?)\s/)[1];
-        console.log(line.match(/Download:\s+(.*?)\s/)[1]);
-      } else if (line.indexOf('Upload:') === 0) {
-        speedTestResult.upload = +line.match(/Upload:\s+(.*?)\s/)[1];
-        console.log(line.match(/Upload:\s+(.*?)\s/)[1]);
+      if (!speedTestResult.server && line.search(SpeedTestService.SERVER_REGEX) !== -1) {
+        speedTestResult.server  = line.match(SpeedTestService.SERVER_REGEX)[1];
+      } else if (speedTestResult.packetLoss === undefined && line.search(SpeedTestService.PACKET_LOSS_REGEX) !== -1) {
+        speedTestResult.packetLoss = +(line.match(SpeedTestService.PACKET_LOSS_REGEX)[1]);
+      } else if (!speedTestResult.isp && line.search(SpeedTestService.ISP_REGEX) !== -1) {
+        speedTestResult.isp = line.match(SpeedTestService.ISP_REGEX)[1];
+      } else if (speedTestResult.ping === undefined && line.search(SpeedTestService.PING_REGEX) !== -1) {
+        speedTestResult.ping = +(line.match(SpeedTestService.PING_REGEX)[1]);
+      } else if (speedTestResult.download === undefined && line.search(SpeedTestService.DOWNLOAD_REGEX) !== -1) {
+        speedTestResult.download = +(line.match(SpeedTestService.DOWNLOAD_REGEX)[1]);
+      } else if (speedTestResult.upload === undefined && line.search(SpeedTestService.UPLOAD_REGEX) !== -1) {
+        speedTestResult.upload = +(line.match(SpeedTestService.UPLOAD_REGEX)[1]);
       }
-      console.log(line);
     });
     return speedTestResult;
   }
+
 }
