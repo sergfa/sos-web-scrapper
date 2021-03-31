@@ -12,16 +12,20 @@ export class SpeedTestScrapper {
 
   private onSpeedTestSuccess(result: SpeedTestResult) {
     console.log(result);
-    this._influx
-      .writePoints([
-        {
-          measurement: 'test_speed_result',
-          tags: { host: 'MyRaspberryPiSOSServer' },
-          fields: result,
-        },
-      ])
-      .catch(err => {
-        console.error(`Error saving data to InfluxDB! ${err.stack}`);
-      });
+    try {
+      this._influx
+        .writePoints([
+          {
+            measurement: 'test_speed_result',
+            tags: { host: 'MyRaspberryPiSOSServer' },
+            fields: result,
+          },
+        ])
+        .catch(err => {
+          console.error(`Error saving data to InfluxDB! ${err.stack}`);
+        });
+    } catch (err) {
+      console.log(err);
+    }
   }
 }

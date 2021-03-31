@@ -34,6 +34,7 @@ influx
     if (!names.includes('test_speed_db')) {
       return influx.createDatabase('test_speed_db');
     }
+    console.log('dbs', names);
   })
   .then(() => {
     const speedTestScrapper = new SpeedTestScrapper(5, influx);
